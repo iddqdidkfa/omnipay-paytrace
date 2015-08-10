@@ -4,27 +4,28 @@ namespace Omnipay\Paytrace\Message;
 
 use Omnipay\Common\Message\RequestInterface;
 
-class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
+abstract class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
 {
+    const TRANSACTION_KEY = '';
+
     public function __construct(RequestInterface $request, $data)
     {
+        echo "Response:\n".(string)$data.PHP_EOL;
         $parsedData = [];
-        $responseArr = explode('|', $data);
+        $responseArr = explode('|', (string)$data);
         foreach ($responseArr as $pair) {
+            if (strlen(trim($pair)) == 0) {
+                continue;
+            }
             $tmp = explode('~', $pair);
             $parsedData[$tmp[0]] = $tmp[1];
         }
         parent::__construct($request, $parsedData);
     }
 
-    public function isSuccessful()
-    {
-        return false;
-    }
-
     public function getTransactionReference()
     {
-        return isset($this->data['TRANSACTIONID']) ? $this->data['TRANSACTIONID'] : null;
+        return isset($this->data[static::TRANSACTION_KEY]) ? $this->data[static::TRANSACTION_KEY] : null;
     }
 
     public function getMessage()
@@ -32,11 +33,8 @@ class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
         if ($this->isSuccessful()) {
             return isset($this->data['RESPONSE']) ? substr($this->data['RESPONSE'], 5) : null;
         } else {
-            if (substr($this->data['ERROR'], 0, 4) == '9102') {
-                return substr($this->data['ERROR'], 9);
-            } else {
-                return substr($this->data['ERROR'], 4);
-            }
+            $errorParts = explode('. ', $this->data['ERROR'], 2);
+            return (count($errorParts) == 2) ? $errorParts[1] : null;
         }
     }
 
@@ -45,11 +43,8 @@ class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
         if ($this->isSuccessful()) {
             return isset($this->data['RESPONSE']) ? substr($this->data['RESPONSE'], 0, 3) : null;
         } else {
-            if (substr($this->data['ERROR'], 0, 4) == '9102') {
-                return substr($this->data['ERROR'], 5, 2);
-            } else {
-                return substr($this->data['ERROR'], 0, 2);
-            }
+            $errorParts = explode('. ', $this->data['ERROR'], 2);
+            return (count($errorParts) == 2) ? $errorParts[0] : null;
         }
     }
 }

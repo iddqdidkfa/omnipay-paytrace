@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Paytrace\Message;
+namespace Omnipay\Paytrace\Message\CreditCard;
 
 class AuthorizeResponse extends AbstractResponse
 {

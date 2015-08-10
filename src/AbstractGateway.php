@@ -2,17 +2,13 @@
 
 namespace Omnipay\Paytrace;
 
-use Omnipay\Common\AbstractGateway;
-
-class Gateway extends AbstractGateway
+class AbstractGateway extends \Omnipay\Common\AbstractGateway
 {
-    /**
-     * Get gateway display name
-     * This can be used by carts to get the display name for each gateway.
-     */
+    const GATEWAY_TYPE = '';
+
     public function getName()
     {
-        return 'PayTrace';
+        return 'PayTrace Check';
     }
 
     public function getDefaultParameters()
@@ -27,27 +23,27 @@ class Gateway extends AbstractGateway
 
     public function authorize(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\AuthorizeRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\AuthorizeRequest', $params);
     }
 
     public function capture(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\CaptureRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\CaptureRequest', $params);
     }
 
     public function purchase(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\PurchaseRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\PurchaseRequest', $params);
     }
 
     public function void(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\VoidRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\VoidRequest', $params);
     }
 
     public function refund(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\RefundRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\RefundRequest', $params);
     }
 
     public function getUserName()

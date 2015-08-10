@@ -1,11 +1,11 @@
 <?php
 
-namespace Omnipay\Paytrace\Message;
+namespace Omnipay\Paytrace\Message\CreditCard;
 
 class RefundRequest extends AbstractRequest
 {
     protected $type = 'Refund';
-    protected $responseClass = 'CaptureResponse';
+    protected $responseClass = 'Omnipay\Paytrace\Message\CreditCard\CaptureResponse';
 
     public function getData()
     {

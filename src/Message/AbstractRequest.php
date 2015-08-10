@@ -2,23 +2,26 @@
 
 namespace Omnipay\Paytrace\Message;
 
-class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
+abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 {
+    protected $method;
+    protected $type;
     protected $responseClass;
-    /**
-     * Get the raw data array for this message. The format of this varies from gateway to
-     * gateway, but will usually be either an associative array, or a SimpleXMLElement.
-     *
-     * @return mixed
-     */
-    public function getData()
-    {
-
-    }
 
     public function sendData($data)
     {
-        $httpResponse = $this->httpClient->post($this->getEndpoint(), null, $data)->send();
+        $headers = [
+            'MIME-Version' => '1.0',
+            'Content-type' => 'application/x-www-form-urlencoded',
+            'Contenttransfer-encoding' => 'text',
+        ];
+        print_r($this->preparePostData($data));
+        echo PHP_EOL;
+        $httpResponse = $this->httpClient->post(
+            $this->getEndpoint(),
+            $headers,
+            'parmlist='.$this->preparePostData($data)
+        )->send();
         $responseClass = $this->responseClass;
         return $this->response = new $responseClass($this, $httpResponse->getBody());
     }
@@ -63,13 +66,12 @@ class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->setParameter('invoiceId', $value);
     }
 
-    protected function getBaseData()
+    /**
+     * @return \Omnipay\Common\CreditCard|\Omnipay\Paytrace\Check
+     */
+    protected function getBillingSource()
     {
-        return [
-            'TERMS' => 'Y',
-            'UN' => $this->getUserName(),
-            'PSWD' => $this->getPassword(),
-        ];
+        return null;
     }
 
     protected function getBillingData()
@@ -80,33 +82,41 @@ class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             'INVOICE' => $this->getInvoiceId(),
         ];
 
-        if ($card = $this->getCard()) {
-            $data['BNAME'] = $card->getBillingName();
-            $data['PHONE'] = $card->getPhone();
-            $data['EMAIL'] = $card->getEmail();
-
-            $data['BADDRESS'] = $card->getBillingAddress1();
-            $data['BADDRESS2'] = $card->getBillingAddress2();
-            $data['BCITY'] = $card->getBillingCity();
-            $data['BCOUNTRY'] = $card->getBillingCountry();
-            $data['BSTATE'] = $card->getBillingState();
-            $data['BZIP'] = $card->getBillingPostcode();
-
-            $data['SADDRESS'] = $card->getShippingAddress1();
-            $data['SADDRESS2'] = $card->getShippingAddress2();
-            $data['SCITY'] = $card->getShippingCity();
-            $data['SCOUNTRY'] = $card->getShippingCountry();
-            $data['SSTATE'] = $card->getShippingState();
-            $data['SZIP'] = $card->getShippingPostcode();
+        $source = $this->getBillingSource();
+        if (!$source) {
+            return $data;
         }
+
+        $data['BNAME'] = $source->getBillingName();
+        $data['PHONE'] = $source->getPhone();
+        $data['EMAIL'] = $source->getEmail();
+
+        $data['BADDRESS'] = $source->getBillingAddress1();
+        $data['BADDRESS2'] = $source->getBillingAddress2();
+        $data['BCITY'] = $source->getBillingCity();
+        $data['BCOUNTRY'] = $source->getBillingCountry();
+        $data['BSTATE'] = $source->getBillingState();
+        $data['BZIP'] = $source->getBillingPostcode();
+
+        $data['SADDRESS'] = $source->getShippingAddress1();
+        $data['SADDRESS2'] = $source->getShippingAddress2();
+        $data['SCITY'] = $source->getShippingCity();
+        $data['SCOUNTRY'] = $source->getShippingCountry();
+        $data['SSTATE'] = $source->getShippingState();
+        $data['SZIP'] = $source->getShippingPostcode();
 
         return $data;
     }
+
+
 
     protected function preparePostData($data)
     {
         $postData = '';
         foreach ($data as $key => $value) {
+            if (empty($value)) {
+                continue;
+            }
             $postData .= urlencode("{$key}~{$value}|");
         }
         return $postData;

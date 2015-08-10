@@ -1,18 +1,14 @@
 <?php
 
-namespace Omnipay\Paytrace\Message;
+namespace Omnipay\Paytrace\Message\CreditCard;
 
 class AuthorizeRequest extends AbstractRequest
 {
-    protected $method = 'ProcessTranx';
     protected $type = 'Authorization';
-    protected $responseClass = 'AuthorizeResponse';
+    protected $responseClass = 'Omnipay\Paytrace\Message\CreditCard\AuthorizeResponse';
 
     /**
-     * Get the raw data array for this message. The format of this varies from gateway to
-     * gateway, but will usually be either an associative array, or a SimpleXMLElement.
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function getData()
     {
@@ -21,8 +17,8 @@ class AuthorizeRequest extends AbstractRequest
         $data = $this->getBaseData();
         $card = $this->getCard();
         $data['CC'] = $card->getNumber();
-        $data['EXPMNTH'] = substr($card->getExpiryYear(), -2);
-        $data['EXPYR'] = $card->getExpiryMonth();
+        $data['EXPYR'] = substr($card->getExpiryYear(), -2);
+        $data['EXPMNTH'] = str_pad($card->getExpiryMonth(), 2, '0', STR_PAD_LEFT);
         if ($this->getTestMode()) {
             $data['TEST'] = 'Y';
         }

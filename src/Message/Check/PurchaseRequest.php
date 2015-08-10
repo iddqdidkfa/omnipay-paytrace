@@ -1,6 +1,6 @@
 <?php
 
-namespace Omnipay\Paytrace\Message;
+namespace Omnipay\Paytrace\Message\Check;
 
 class PurchaseRequest extends AuthorizeRequest
 {
