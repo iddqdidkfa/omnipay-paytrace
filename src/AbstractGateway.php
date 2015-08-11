@@ -23,8 +23,10 @@ class AbstractGateway extends \Omnipay\Common\AbstractGateway
 
     public function authorize(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\AuthorizeRequest',
-            $params);
+        return $this->createRequest(
+            '\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\AuthorizeRequest',
+            $params
+        );
     }
 
     public function capture(array $params = [])
