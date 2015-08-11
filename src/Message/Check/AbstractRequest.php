@@ -1,11 +1,13 @@
 <?php
 
 namespace Omnipay\Paytrace\Message\Check;
+
 use Omnipay\Paytrace\Check;
 
 abstract class AbstractRequest extends \Omnipay\Paytrace\Message\AbstractRequest
 {
     protected $responseClass = 'Omnipay\Paytrace\Message\Check\Response';
+
     /**
      * @return \Omnipay\Paytrace\Check
      */

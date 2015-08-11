@@ -23,27 +23,28 @@ class AbstractGateway extends \Omnipay\Common\AbstractGateway
 
     public function authorize(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\AuthorizeRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\AuthorizeRequest',
+            $params);
     }
 
     public function capture(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\CaptureRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\CaptureRequest', $params);
     }
 
     public function purchase(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\PurchaseRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\PurchaseRequest', $params);
     }
 
     public function void(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\VoidRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\VoidRequest', $params);
     }
 
     public function refund(array $params = [])
     {
-        return $this->createRequest('\Omnipay\Paytrace\Message\\'.static::GATEWAY_TYPE.'\RefundRequest', $params);
+        return $this->createRequest('\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\RefundRequest', $params);
     }
 
     public function getUserName()

@@ -12,6 +12,6 @@ class AuthorizeResponse extends AbstractResponse
     public function isSuccessful()
     {
         return isset($this->data['APPCODE']) && !empty($this->data['APPCODE'])
-            && (!isset($this->data['ERROR']) || empty($this->data['ERROR']));
+        && (!isset($this->data['ERROR']) || empty($this->data['ERROR']));
     }
 }

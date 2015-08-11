@@ -11,6 +11,6 @@ class Response extends AbstractResponse
     public function isSuccessful()
     {
         return isset($this->data[static::TRANSACTION_KEY]) && !empty($this->data[static::TRANSACTION_KEY])
-            && (!isset($this->data['ERROR']) || empty($this->data['ERROR']));
+        && (!isset($this->data['ERROR']) || empty($this->data['ERROR']));
     }
 }

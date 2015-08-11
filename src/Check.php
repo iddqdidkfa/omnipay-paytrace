@@ -498,3 +498,4 @@ class Check
         return $this->setParameter('email', $value);
     }
 }
+
