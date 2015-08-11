@@ -7,7 +7,7 @@
 [![Total Downloads](https://poser.pugx.org/softcommerce/omnipay-paytrace/d/total.png)](https://packagist.org/packages/softcommerce/omnipay-paytrace)
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.3+. This package implements [PayTrace](https://www.paytrace.net) support for Omnipay.
+processing library for PHP 5.4+. This package implements [PayTrace](https://www.paytrace.net) support for Omnipay.
 
 ## Installation
 
