@@ -10,7 +10,6 @@ abstract class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
 
     public function __construct(RequestInterface $request, $data)
     {
-        echo "Response:\n".(string)$data.PHP_EOL;
         $parsedData = [];
         $responseArr = explode('|', (string)$data);
         foreach ($responseArr as $pair) {
@@ -33,7 +32,11 @@ abstract class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
         if ($this->isSuccessful()) {
             return isset($this->data['RESPONSE']) ? substr($this->data['RESPONSE'], 5) : null;
         } else {
-            $errorParts = explode('. ', $this->data['ERROR'], 2);
+            if (isset($this->data['ERROR'])) {
+                $errorParts = explode('. ', $this->data['ERROR'], 2);
+            } else {
+                $errorParts = explode('. ', $this->data['RESPONSE'], 2);
+            }
             return (count($errorParts) == 2) ? $errorParts[1] : null;
         }
     }
@@ -43,7 +46,11 @@ abstract class AbstractResponse extends \Omnipay\Common\Message\AbstractResponse
         if ($this->isSuccessful()) {
             return isset($this->data['RESPONSE']) ? substr($this->data['RESPONSE'], 0, 3) : null;
         } else {
-            $errorParts = explode('. ', $this->data['ERROR'], 2);
+            if (isset($this->data['ERROR'])) {
+                $errorParts = explode('. ', $this->data['ERROR'], 2);
+            } else {
+                $errorParts = explode('. ', $this->data['RESPONSE'], 2);
+            }
             return (count($errorParts) == 2) ? $errorParts[0] : null;
         }
     }

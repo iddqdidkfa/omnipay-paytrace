@@ -15,8 +15,8 @@ class RefundRequest extends AbstractRequest
         $card = $this->getCard();
         $data['AMOUNT'] = $this->getAmount();
         $data['CC'] = $card->getNumber();
-        $data['EXPMNTH'] = substr($card->getExpiryYear(), -2);
-        $data['EXPYR'] = $card->getExpiryMonth();
+        $data['EXPYR'] = substr($card->getExpiryYear(), -2);
+        $data['EXPMNTH'] = str_pad($card->getExpiryMonth(), 2, '0', STR_PAD_LEFT);
         if ($this->getTestMode()) {
             $data['TEST'] = 'Y';
         }

@@ -1,0 +1,34 @@
+{
+  "name": "softcommerce/omnipay-paytrace",
+  "type": "library",
+  "description": "PayTrace gateway for the Omnipay payment processing library",
+  "keywords": [
+    "paytrace",
+    "omnipay",
+    "merchant",
+    "payment",
+    "gateway"
+  ],
+  "homepage": "https://github.com/iddqdidkfa/omnipay-paytrace",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oleg Ilyushyn",
+      "email": "iloa.exec@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": { "Omnipay\\Paytrace\\" : "src/" }
+  },
+  "require": {
+    "omnipay/common": "~2.0"
+  },
+  "require-dev": {
+    "omnipay/tests": "~2.0"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  }
+}

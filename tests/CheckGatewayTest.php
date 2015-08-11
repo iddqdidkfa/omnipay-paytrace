@@ -2,7 +2,7 @@
 
 namespace Omnipay\Paytrace;
 
-class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
+class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 {
     /** @var  CreditCardGateway */
     protected $gateway;
@@ -10,13 +10,17 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function setUp()
     {
-        $this->gateway = new CreditCardGateway($this->getHttpClient(), $this->getHttpRequest());
+        $this->gateway = new CheckGateway($this->getHttpClient(), $this->getHttpRequest());
         $this->gateway->setPassword('demo123')
             ->setUserName('demo123')
             ->setTestMode(true);
         $this->options = [
             'amount' => '10.00',
-            'card' => $this->getValidCard(),
+            'check' => [
+                'routingNumber' => '325070760',
+                'bankAccount' => '1234567890',
+                'name' => 'John DOe',
+            ],
         ];
     }
 
@@ -24,13 +28,13 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
     {
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->authorize($this->options)->send();
-        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\AuthorizeResponse', $response);
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNotEmpty($response->getTransactionReference());
-        $this->assertSame('104', $response->getCode());
+        $this->assertSame('121', $response->getCode());
         $this->assertSame(
-            'Your TEST transaction was successfully approved. HOWEVER, A LIVE APPROVAL WAS NOT OBTAINED.',
+            'Your TEST check was successfully processed. HOWEVER, FUNDS WILL NOT BE TRANSFERRED.',
             $response->getMessage()
         );
     }
@@ -39,7 +43,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
     {
         $this->gateway->setPassword('111');
         $response = $this->gateway->authorize($this->options)->send();
-        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\AuthorizeResponse', $response);
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());
         $this->assertSame('Log in failed.', $response->getMessage());
@@ -51,13 +55,13 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
     {
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->purchase($this->options)->send();
-        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\AuthorizeResponse', $response);
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNotEmpty($response->getTransactionReference());
-        $this->assertSame('104', $response->getCode());
+        $this->assertSame('121', $response->getCode());
         $this->assertSame(
-            'Your TEST transaction was successfully approved. HOWEVER, A LIVE APPROVAL WAS NOT OBTAINED.',
+            'Your TEST check was successfully processed. HOWEVER, FUNDS WILL NOT BE TRANSFERRED.',
             $response->getMessage()
         );
     }
@@ -66,7 +70,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
     {
         $this->gateway->setPassword('111');
         $response = $this->gateway->purchase($this->options)->send();
-        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\AuthorizeResponse', $response);
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());
         $this->assertSame('Log in failed.', $response->getMessage());
@@ -78,13 +82,13 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
     {
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->refund($this->options)->send();
-        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\CaptureResponse', $response);
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
         $this->assertTrue($response->isSuccessful());
         $this->assertFalse($response->isRedirect());
         $this->assertNotEmpty($response->getTransactionReference());
-        $this->assertSame('108', $response->getCode());
+        $this->assertSame('123', $response->getCode());
         $this->assertSame(
-            'Your TEST transaction was successfully refunded. HOWEVER, NO FUNDS WILL BE REFUNDED.',
+            'Your TEST check was successfully refunded. HOWEVER, NO FUNDS WILL BE TRANSFERRED.',
             $response->getMessage()
         );
     }
@@ -93,7 +97,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
     {
         $this->gateway->setPassword('111');
         $response = $this->gateway->refund($this->options)->send();
-        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\CaptureResponse', $response);
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());
         $this->assertSame('Log in failed.', $response->getMessage());
