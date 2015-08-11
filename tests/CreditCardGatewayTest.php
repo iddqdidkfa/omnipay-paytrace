@@ -43,8 +43,6 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());
         $this->assertSame('Log in failed.', $response->getMessage());
-//        $this->assertSame('105', $response->getCode());
-//        $this->assertSame('Your TEST transaction was not approved.', $response->getMessage());
     }
 
     public function testPurchaseSuccess()
@@ -70,8 +68,6 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());
         $this->assertSame('Log in failed.', $response->getMessage());
-//        $this->assertSame('105', $response->getCode());
-//        $this->assertSame('Your TEST transaction was not approved.', $response->getMessage());
     }
 
     public function testRefundSuccess()
@@ -97,7 +93,5 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());
         $this->assertSame('Log in failed.', $response->getMessage());
-//        $this->assertSame('107', $response->getCode());
-//        $this->assertSame('Your transaction was not successfully refunded.', $response->getMessage());
     }
 }
