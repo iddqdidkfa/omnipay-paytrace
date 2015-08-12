@@ -36,6 +36,7 @@ The following gateways are provided by this package:
 * Paytrace_CreditCard
 * Paytrace_Check
 
+Usage Example:
 ```php
 $ccGateway = \Omnipay\Omnipay::create('Paytrace_CreditCard');
 $ccGateway->setUserName('demo123')
@@ -54,7 +55,7 @@ if ($response->isSuccessful()) {
 }
 
 $chGateWay = \Omnipay\Omnipay::create('Paytrace_Check');
-$ccGateway->setUserName('demo123')
+$chGateway->setUserName('demo123')
 	->setPassword('demo123')
 	->setTestMode(true);
 
