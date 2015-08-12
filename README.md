@@ -7,7 +7,9 @@
 [![Total Downloads](https://poser.pugx.org/softcommerce/omnipay-paytrace/d/total.png)](https://packagist.org/packages/softcommerce/omnipay-paytrace)
 
 [Omnipay](https://github.com/thephpleague/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.4+. This package implements [PayTrace](https://www.paytrace.net) support for Omnipay.
+processing library for PHP 5.3+. This package implements [PayTrace](https://www.paytrace.net) support for Omnipay.
+
+This package require PHP 5.4+
 
 ## Installation
 
@@ -33,6 +35,41 @@ The following gateways are provided by this package:
 
 * Paytrace_CreditCard
 * Paytrace_Check
+
+```php
+$ccGateway = \Omnipay\Omnipay::create('Paytrace_CreditCard');
+$ccGateway->setUserName('demo123')
+	->setPassword('demo123')
+	->setTestMode(true);
+
+$creditCardData = ['number' => '4242424242424242', 'expiryMonth' => '6', 'expiryYear' => '2016', 'cvv' => '123'];
+$response = $ccGateway->purchase(['amount' => '10.00', 'currency' => 'USD', 'card' => $creditCardData])->send();
+
+if ($response->isSuccessful()) {
+	// SUCCESS
+    echo $response->getMessage();
+} else {
+	// FAIL
+    echo $response->getMessage();
+}
+
+$chGateWay = \Omnipay\Omnipay::create('Paytrace_Check');
+$ccGateway->setUserName('demo123')
+	->setPassword('demo123')
+	->setTestMode(true);
+
+$checkData = ['routingNumber' => '325070760', 'bankAccount' => '1234567890', 'name' => 'John Doe'];
+$response = $chGateway->purchase(['amount' => '10.00', 'currency' => 'USD', 'check' => $checkData])->send();
+
+if ($response->isSuccessful()) {
+	// SUCCESS
+    echo $response->getMessage();
+} else {
+	// FAIL
+    echo $response->getMessage();
+}
+```
+
 
 For general usage instructions, please see the main [Omnipay](https://github.com/thephpleague/omnipay)
 repository.
