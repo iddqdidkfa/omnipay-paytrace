@@ -2,7 +2,7 @@
 
 namespace Omnipay\Paytrace\Message\CreditCard;
 
-class AuthorizeRequest extends AuthorizeRequest
+class CreateCardRequest extends AuthorizeRequest
 {
     protected $type = 'CreateCustomer';
     protected $responseClass = 'Omnipay\Paytrace\Message\CreditCard\CreateCardResponse';
@@ -20,6 +20,8 @@ class AuthorizeRequest extends AuthorizeRequest
         $data['EXPYR'] = substr($card->getExpiryYear(), -2);
         $data['EXPMNTH'] = str_pad($card->getExpiryMonth(), 2, '0', STR_PAD_LEFT);
         $data['CUSTID'] = $this->getCardReference();
+        $data['METHOD'] = $this->type;
+        unset($data['TRANXTYPE']);
         if ($this->getTestMode()) {
             $data['TEST'] = 'Y';
         }
