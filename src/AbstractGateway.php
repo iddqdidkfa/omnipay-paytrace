@@ -8,7 +8,7 @@ class AbstractGateway extends \Omnipay\Common\AbstractGateway
 
     public function getName()
     {
-        return 'PayTrace Check';
+        return 'PayTrace Check'; // @codeCoverageIgnore
     }
 
     public function getDefaultParameters()

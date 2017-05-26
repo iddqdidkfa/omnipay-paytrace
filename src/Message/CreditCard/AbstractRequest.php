@@ -21,4 +21,15 @@ abstract class AbstractRequest extends \Omnipay\Paytrace\Message\AbstractRequest
             'TRANXTYPE' => $this->type,
         ];
     }
+
+    protected function getCardData() {
+        $this->validate('card');
+        $this->getCard()->validate();
+        $card = $this->getCard();
+        $data = array();
+        $data['CC'] = $card->getNumber();
+        $data['EXPYR'] = substr($card->getExpiryYear(), -2);
+        $data['EXPMNTH'] = str_pad($card->getExpiryMonth(), 2, '0', STR_PAD_LEFT);
+        return $data;
+    }
 }

@@ -44,6 +44,7 @@ class PurchaseRequestTest extends TestCase
                 'shippingCountry' => 'US',
                 'shippingPhone' => '(555) 987-6543',
             ],
+            'testmode' => 1,
         ];
 
         $this->request->initialize($expectedData);

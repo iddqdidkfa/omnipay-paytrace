@@ -26,6 +26,8 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testAuthorizeSuccess()
     {
+        $this->setMockHttpResponse('Check_ResponseSuccess.txt');
+            
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->authorize($this->options)->send();
         $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
@@ -41,6 +43,8 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testAuthorizeFailure()
     {
+        $this->setMockHttpResponse('ResponseFailed.txt');
+        
         $this->gateway->setPassword('111');
         $response = $this->gateway->authorize($this->options)->send();
         $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
@@ -51,6 +55,8 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testPurchaseSuccess()
     {
+        $this->setMockHttpResponse('Check_ResponseSuccess.txt');
+
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->purchase($this->options)->send();
         $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
@@ -66,6 +72,8 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testPurchaseFailure()
     {
+        $this->setMockHttpResponse('ResponseFailed.txt');
+        
         $this->gateway->setPassword('111');
         $response = $this->gateway->purchase($this->options)->send();
         $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
@@ -76,6 +84,8 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testRefundSuccess()
     {
+        $this->setMockHttpResponse('Check_RefundResponseSuccess.txt');
+
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->refund($this->options)->send();
         $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
@@ -89,13 +99,52 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
         );
     }
 
+    public function testRefundTransactionReferenceSuccess()
+    {
+        $this->setMockHttpResponse('Check_RefundResponseSuccess.txt');
+
+        $this->gateway->setPassword('demo123');
+        $options = array_merge(array('transactionReference' => 89731989), $this->options);
+        unset($options['check']);
+        $response = $this->gateway->refund($options)->send();
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertSame('89731989', $response->getTransactionReference());
+        $this->assertSame('123', $response->getCode());
+        $this->assertSame(
+            'Your TEST check was successfully refunded. HOWEVER, NO FUNDS WILL BE TRANSFERRED.',
+            $response->getMessage()
+        );
+    }
+
     public function testRefundFailure()
     {
+        $this->setMockHttpResponse('ResponseFailed.txt');
+
         $this->gateway->setPassword('111');
         $response = $this->gateway->refund($this->options)->send();
         $this->assertInstanceOf('\Omnipay\Paytrace\Message\Check\Response', $response);
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());
         $this->assertSame('Log in failed.', $response->getMessage());
+    }
+
+    public function testCreateCardSuccess()
+    {
+        $this->setMockHttpResponse('CreateCardResponseSuccess.txt');
+
+        $this->gateway->setPassword('demo123');
+        $response = $this->gateway->createCard($this->options)->send();
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\CreateCardResponse', $response);
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getTransactionReference());
+        $this->assertSame('160', $response->getCode());
+        $this->assertSame('14496097', $response->getCardReference());
+        $this->assertSame(
+            'The customer profile for 14496097\/John Doe was successfully created.',
+            $response->getMessage()
+        );
     }
 }

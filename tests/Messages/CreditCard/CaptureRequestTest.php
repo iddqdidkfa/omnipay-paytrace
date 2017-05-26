@@ -21,6 +21,7 @@ class CaptureRequestTest extends TestCase
             'username' => 'tester',
             'password' => 'testpwd',
             'transactionReference' => '1000001',
+            'testmode' => 1,
         ];
 
         $this->request->initialize($expectedData);

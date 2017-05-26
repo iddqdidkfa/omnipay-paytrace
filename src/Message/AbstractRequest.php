@@ -70,7 +70,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
      */
     protected function getBillingSource()
     {
-        return null;
+        return null; // @codeCoverageIgnore
     }
 
     protected function getBillingData()
@@ -83,7 +83,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
 
         $source = $this->getBillingSource();
         if (!$source) {
-            return $data;
+            return $data; // @codeCoverageIgnore
         }
 
         $data['BNAME'] = $source->getBillingName();

@@ -30,6 +30,7 @@ class RefundRequestTest extends TestCase
                 'expiryYear' => '2020',
                 'cvv' => '123',
             ],
+            'testmode' => 1,
         ];
 
         $this->request->initialize($expectedData);

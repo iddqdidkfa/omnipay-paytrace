@@ -13,12 +13,8 @@ class CreateCardRequest extends AuthorizeRequest
     public function getData()
     {
         $this->validate('card');
-        $this->getCard()->validate();
         $data = $this->getBaseData();
-        $card = $this->getCard();
-        $data['CC'] = $card->getNumber();
-        $data['EXPYR'] = substr($card->getExpiryYear(), -2);
-        $data['EXPMNTH'] = str_pad($card->getExpiryMonth(), 2, '0', STR_PAD_LEFT);
+        $data = array_merge($data, $this->getCardData());
         $data['CUSTID'] = $this->getCardReference();
         $data['METHOD'] = $this->type;
         unset($data['TRANXTYPE']);
