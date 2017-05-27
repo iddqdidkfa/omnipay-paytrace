@@ -8,7 +8,7 @@ class RefundRequest extends AuthorizeRequest
 
     public function getData()
     {
-        if ($this->getCheck()) {            
+        if ($this->getCheck()) {
             $this->validate('amount', 'check');
             $check = $this->getCheck();
             $check->validate();

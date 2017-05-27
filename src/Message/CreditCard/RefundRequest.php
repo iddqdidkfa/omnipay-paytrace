@@ -9,7 +9,7 @@ class RefundRequest extends AbstractRequest
 
     public function getData()
     {
-        if ($this->getCard()) {            
+        if ($this->getCard()) {
             $this->validate('amount', 'card');
             $this->getCard()->validate();
             $data = $this->getBaseData();
