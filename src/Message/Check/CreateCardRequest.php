@@ -2,23 +2,25 @@
 
 namespace Omnipay\Paytrace\Message\Check;
 
-class AuthorizeRequest extends AbstractRequest
+class CreateCardRequest extends AuthorizeRequest
 {
-    protected $method = 'ProcessCheck';
-    protected $type = 'Hold';
+    protected $type = 'CreateCustomer';
+    protected $responseClass = 'Omnipay\Paytrace\Message\CreditCard\CreateCardResponse';
 
     /**
      * @inheritdoc
      */
     public function getData()
     {
-        $this->validate('amount', 'check');
+        $this->validate('check');
         $check = $this->getCheck();
         $check->validate();
         $data = $this->getBaseData();
         $data['DDA'] = $check->getBankAccount();
         $data['TR'] = $check->getRoutingNumber();
-        $data['AMOUNT'] = $this->getAmount();
+        $data['CUSTID'] = $this->getCardReference();
+        $data['METHOD'] = $this->type;
+        unset($data['TRANXTYPE']);
         if ($this->getTestMode()) {
             $data['TEST'] = 'Y';
         }

@@ -4,15 +4,15 @@ namespace Omnipay\Paytrace\Message\CreditCard;
 
 use Omnipay\Tests\TestCase;
 
-class AuthorizeRequestTest extends TestCase
+class CreateCardRequestTest extends TestCase
 {
-    /** @var  \Omnipay\Paytrace\Message\CreditCard\AuthorizeRequest $request */
+    /** @var  \Omnipay\Paytrace\Message\CreditCard\CreateCardRequest $request */
     private $request;
 
     public function setUp()
     {
         parent::setUp();
-        $this->request = new AuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());
+        $this->request = new CreateCardRequest($this->getHttpClient(), $this->getHttpRequest());
     }
 
     public function testGetData()
@@ -20,8 +20,6 @@ class AuthorizeRequestTest extends TestCase
         $expectedData = [
             'username' => 'tester',
             'password' => 'testpwd',
-            'invoiceId' => '1000001',
-            'amount' => '10.00',
             'card' => [
                 'firstName' => 'Example',
                 'lastName' => 'User',
@@ -44,7 +42,7 @@ class AuthorizeRequestTest extends TestCase
                 'shippingCountry' => 'US',
                 'shippingPhone' => '(555) 987-6543',
             ],
-            'testmode' => 1,
+            'testmode' => 1
         ];
 
         $this->request->initialize($expectedData);
@@ -59,9 +57,7 @@ class AuthorizeRequestTest extends TestCase
         $this->assertSame($expectedData['card']['shippingCity'], $data['SCITY']);
         $this->assertSame($expectedData['username'], $data['UN']);
         $this->assertSame($expectedData['password'], $data['PSWD']);
-        $this->assertSame('ProcessTranx', $data['METHOD']);
-        $this->assertSame('Authorization', $data['TRANXTYPE']);
-        $this->assertSame('10.00', $data['AMOUNT']);
+        $this->assertSame('CreateCustomer', $data['METHOD']);
         $this->assertSame('Y', $data['TERMS']);
     }
 }

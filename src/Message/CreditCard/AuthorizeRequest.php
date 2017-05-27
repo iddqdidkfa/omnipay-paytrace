@@ -12,13 +12,13 @@ class AuthorizeRequest extends AbstractRequest
      */
     public function getData()
     {
-        $this->validate('amount', 'card');
-        $this->getCard()->validate();
+        $this->validate('amount');
         $data = $this->getBaseData();
-        $card = $this->getCard();
-        $data['CC'] = $card->getNumber();
-        $data['EXPYR'] = substr($card->getExpiryYear(), -2);
-        $data['EXPMNTH'] = str_pad($card->getExpiryMonth(), 2, '0', STR_PAD_LEFT);
+        if ($this->getCardReference()) {
+            $data['CUSTID'] = $this->getCardReference();
+        } else {
+            $data = array_merge($data, $this->getCardData());
+        }
         if ($this->getTestMode()) {
             $data['TEST'] = 'Y';
         }

@@ -9,16 +9,22 @@ class RefundRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('amount', 'card');
-        $this->getCard()->validate();
-        $data = $this->getBaseData();
-        $card = $this->getCard();
-        $data['AMOUNT'] = $this->getAmount();
-        $data['CC'] = $card->getNumber();
-        $data['EXPYR'] = substr($card->getExpiryYear(), -2);
-        $data['EXPMNTH'] = str_pad($card->getExpiryMonth(), 2, '0', STR_PAD_LEFT);
-        if ($this->getTestMode()) {
-            $data['TEST'] = 'Y';
+        if ($this->getCard()) {            
+            $this->validate('amount', 'card');
+            $this->getCard()->validate();
+            $data = $this->getBaseData();
+            $data['AMOUNT'] = $this->getAmount();
+            $data = array_merge($data, $this->getCardData());
+            if ($this->getTestMode()) {
+                $data['TEST'] = 'Y';
+            }
+        } else {
+            $this->validate('transactionReference');
+            $data = $this->getBaseData();
+            $data['TRANXID'] = $this->getTransactionReference();
+            if ($this->getAmount()) {
+                $data['AMOUNT'] = $this->getAmount();
+            }
         }
         return $data;
     }

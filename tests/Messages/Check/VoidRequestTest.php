@@ -21,6 +21,7 @@ class VoidRequestTest extends TestCase
             'username' => 'tester',
             'password' => 'testpwd',
             'transactionReference' => '32167',
+            'testmode' => 1,
         ];
 
         $this->request->initialize($expectedData);
