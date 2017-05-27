@@ -28,6 +28,7 @@ class RefundRequestTest extends TestCase
                 'routingNumber' => '325070760',
                 'name' => 'John Doe',
             ],
+            'testmode' => 1,
         ];
 
         $this->request->initialize($expectedData);

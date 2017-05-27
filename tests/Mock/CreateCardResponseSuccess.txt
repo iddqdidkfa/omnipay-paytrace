@@ -8,4 +8,4 @@ Content-Length: 350
 Cache-Control: private, must-revalidate, max-age=0
 Expires: Tue, 01 Jan 1980 00:00:00 GMT
 
-RESPONSE~108. Your TEST transaction was successfully refunded. HOWEVER, NO FUNDS WILL BE REFUNDED.|TRANSACTIONID~89731989|APPMSG~TEST TRANSACTION|AVSRESPONSE~Full Exact Match|CSCRESPONSE~Match|
+RESPONSE~160. The customer profile for 14496097\/John Doe was successfully created.|CUSTID~14496097|CUSTOMERID~14496097|

@@ -8,7 +8,7 @@ class AbstractGateway extends \Omnipay\Common\AbstractGateway
 
     public function getName()
     {
-        return 'PayTrace Check';
+        return 'PayTrace Check'; // @codeCoverageIgnore
     }
 
     public function getDefaultParameters()
@@ -27,6 +27,11 @@ class AbstractGateway extends \Omnipay\Common\AbstractGateway
             '\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\AuthorizeRequest',
             $params
         );
+    }
+    
+    public function createCard(array $params = [])
+    {
+        return $this->createRequest('\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\CreateCardRequest', $params);
     }
 
     public function capture(array $params = [])
