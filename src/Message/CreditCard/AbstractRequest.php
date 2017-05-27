@@ -22,7 +22,8 @@ abstract class AbstractRequest extends \Omnipay\Paytrace\Message\AbstractRequest
         ];
     }
 
-    protected function getCardData() {
+    protected function getCardData()
+    {
         $this->validate('card');
         $this->getCard()->validate();
         $card = $this->getCard();
