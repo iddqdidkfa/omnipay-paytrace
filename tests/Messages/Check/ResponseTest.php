@@ -8,7 +8,7 @@ class ResponseTest extends TestCase
 {
     public function testSuccess()
     {
-        $httpResponse = $this->getMockHttpResponse('ResponseSuccess.txt');
+        $httpResponse = $this->getMockHttpResponse('../../../Mock/Check/ResponseSuccess.txt');
         $response = new Response($this->getMockRequest(), $httpResponse->getBody());
         $this->assertTrue($response->isSuccessful());
         $this->assertSame('121', $response->getCode());
@@ -20,7 +20,7 @@ class ResponseTest extends TestCase
 
     public function testFail()
     {
-        $httpResponse = $this->getMockHttpResponse('ResponseFailed.txt');
+        $httpResponse = $this->getMockHttpResponse('../../../Mock/Check/ResponseFailed.txt');
         $response = new Response($this->getMockRequest(), $httpResponse->getBody());
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());

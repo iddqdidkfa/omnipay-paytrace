@@ -8,7 +8,7 @@ class CaptureResponseTest extends TestCase
 {
     public function testSuccess()
     {
-        $httpResponse = $this->getMockHttpResponse('CaptureResponseSuccess.txt');
+        $httpResponse = $this->getMockHttpResponse('../../../Mock/CreditCard/CaptureResponseSuccess.txt');
         $response = new CaptureResponse($this->getMockRequest(), $httpResponse->getBody());
         $this->assertTrue($response->isSuccessful());
         $this->assertSame('114', $response->getCode());
@@ -20,7 +20,7 @@ class CaptureResponseTest extends TestCase
 
     public function testFail()
     {
-        $httpResponse = $this->getMockHttpResponse('ResponseFailed.txt');
+        $httpResponse = $this->getMockHttpResponse('../../../Mock/CreditCard/ResponseFailed.txt');
         $response = new CaptureResponse($this->getMockRequest(), $httpResponse->getBody());
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());

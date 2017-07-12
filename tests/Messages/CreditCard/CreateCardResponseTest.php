@@ -8,7 +8,7 @@ class CreateCardResponseTest extends TestCase
 {
     public function testSuccess()
     {
-        $httpResponse = $this->getMockHttpResponse('CreateCardResponseSuccess.txt');
+        $httpResponse = $this->getMockHttpResponse('../../../Mock/CreditCard/CreateCardResponseSuccess.txt');
         $response = new CreateCardResponse($this->getMockRequest(), $httpResponse->getBody());
         $this->assertTrue($response->isSuccessful());
         $this->assertSame('160', $response->getCode());
@@ -20,7 +20,7 @@ class CreateCardResponseTest extends TestCase
 
     public function testFail()
     {
-        $httpResponse = $this->getMockHttpResponse('ResponseFailed.txt');
+        $httpResponse = $this->getMockHttpResponse('../../../Mock/CreditCard/ResponseFailed.txt');
         $response = new CreateCardResponse($this->getMockRequest(), $httpResponse->getBody());
         $this->assertFalse($response->isSuccessful());
         $this->assertSame('998', $response->getCode());

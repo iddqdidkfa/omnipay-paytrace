@@ -26,7 +26,7 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testAuthorizeSuccess()
     {
-        $this->setMockHttpResponse('../Messages/Check/Mock/ResponseSuccess.txt');
+        $this->setMockHttpResponse('Check/ResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->authorize($this->options)->send();
@@ -43,7 +43,7 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testAuthorizeFailure()
     {
-        $this->setMockHttpResponse('../Messages/Check/Mock/ResponseFailed.txt');
+        $this->setMockHttpResponse('Check/ResponseFailed.txt');
 
         $this->gateway->setPassword('111');
         $response = $this->gateway->authorize($this->options)->send();
@@ -55,7 +55,7 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testPurchaseSuccess()
     {
-        $this->setMockHttpResponse('../Messages/Check/Mock/ResponseSuccess.txt');
+        $this->setMockHttpResponse('Check/ResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->purchase($this->options)->send();
@@ -72,7 +72,7 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testPurchaseFailure()
     {
-        $this->setMockHttpResponse('../Messages/Check/Mock/ResponseFailed.txt');
+        $this->setMockHttpResponse('Check/ResponseFailed.txt');
 
         $this->gateway->setPassword('111');
         $response = $this->gateway->purchase($this->options)->send();
@@ -84,7 +84,7 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testRefundSuccess()
     {
-        $this->setMockHttpResponse('../Messages/Check/Mock/RefundResponseSuccess.txt');
+        $this->setMockHttpResponse('Check/RefundResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->refund($this->options)->send();
@@ -101,7 +101,7 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testRefundTransactionReferenceSuccess()
     {
-        $this->setMockHttpResponse('../Messages/Check/Mock/RefundResponseSuccess.txt');
+        $this->setMockHttpResponse('Check/RefundResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $options = array_merge(array('transactionReference' => 89731989), $this->options);
@@ -120,7 +120,7 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testRefundFailure()
     {
-        $this->setMockHttpResponse('../Messages/Check/Mock/ResponseFailed.txt');
+        $this->setMockHttpResponse('Check/ResponseFailed.txt');
 
         $this->gateway->setPassword('111');
         $response = $this->gateway->refund($this->options)->send();
@@ -132,7 +132,7 @@ class CheckGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testCreateCardSuccess()
     {
-        $this->setMockHttpResponse('../Messages/Check/Mock/CreateCardResponseSuccess.txt');
+        $this->setMockHttpResponse('Check/CreateCardResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->createCard($this->options)->send();
