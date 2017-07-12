@@ -2,7 +2,7 @@
 
 namespace Omnipay\Paytrace\Message\Check;
 
-class CreateCardRequest extends CreateCardRequest
+class UpdateCardRequest extends CreateCardRequest
 {
     protected $type = 'UpdateCustomer';
 }
