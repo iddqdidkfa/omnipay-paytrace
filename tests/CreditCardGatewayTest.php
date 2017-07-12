@@ -161,4 +161,28 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
             $response->getMessage()
         );
     }
+
+    public function testUpdateCardSuccess()
+    {
+        $customer_id = 14496097;
+        $this->setMockHttpResponse('UpdateCardResponseSuccess.txt');
+
+        $this->gateway->setPassword('demo123');
+        $request = $this->gateway->updateCard($this->options);
+        // set our paytrace customer id
+        $request->setCardReference($customer_id);
+
+        $response = $request->send();
+
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\CreateCardResponse', $response);
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getTransactionReference());
+        $this->assertSame('161', $response->getCode());
+        $this->assertSame('14496097', $response->getCardReference());
+        $this->assertSame(
+            'The customer profile for 14496097\/John Doe was successfully updated.',
+            $response->getMessage()
+        );
+    }
 }
