@@ -22,7 +22,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testAuthorizeSuccess()
     {
-        $this->setMockHttpResponse('Credit_AuthorizeResponseSuccess.txt');
+        $this->setMockHttpResponse('CreditCard/AuthorizeResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->authorize($this->options)->send();
@@ -39,7 +39,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testAuthorizeFailure()
     {
-        $this->setMockHttpResponse('ResponseFailed.txt');
+        $this->setMockHttpResponse('CreditCard/ResponseFailed.txt');
 
         $this->gateway->setPassword('111');
         $response = $this->gateway->authorize($this->options)->send();
@@ -51,7 +51,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testPurchaseSuccess()
     {
-        $this->setMockHttpResponse('Credit_AuthorizeResponseSuccess.txt');
+        $this->setMockHttpResponse('CreditCard/AuthorizeResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->purchase($this->options)->send();
@@ -68,7 +68,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testPurchaseCreditReferenceSuccess()
     {
-        $this->setMockHttpResponse('Credit_AuthorizeResponseSuccess.txt');
+        $this->setMockHttpResponse('CreditCard/AuthorizeResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $options = array_merge(array('cardReference' => 1234567890), $this->options);
@@ -86,7 +86,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testPurchaseFailure()
     {
-        $this->setMockHttpResponse('ResponseFailed.txt');
+        $this->setMockHttpResponse('CreditCard/ResponseFailed.txt');
 
         $this->gateway->setPassword('111');
         $response = $this->gateway->purchase($this->options)->send();
@@ -98,7 +98,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testRefundSuccess()
     {
-        $this->setMockHttpResponse('Credit_RefundResponseSuccess.txt');
+        $this->setMockHttpResponse('CreditCard/RefundResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->refund($this->options)->send();
@@ -115,7 +115,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testRefundTransactionReferenceSuccess()
     {
-        $this->setMockHttpResponse('Credit_RefundResponseSuccess.txt');
+        $this->setMockHttpResponse('CreditCard/RefundResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $options = array_merge(array('transactionReference' => 89731989), $this->options);
@@ -134,7 +134,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testRefundFailure()
     {
-        $this->setMockHttpResponse('ResponseFailed.txt');
+        $this->setMockHttpResponse('CreditCard/ResponseFailed.txt');
 
         $this->gateway->setPassword('111');
         $response = $this->gateway->refund($this->options)->send();
@@ -146,7 +146,7 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
 
     public function testCreateCardSuccess()
     {
-        $this->setMockHttpResponse('CreateCardResponseSuccess.txt');
+        $this->setMockHttpResponse('CreditCard/CreateCardResponseSuccess.txt');
 
         $this->gateway->setPassword('demo123');
         $response = $this->gateway->createCard($this->options)->send();
@@ -158,6 +158,30 @@ class CreditCardGatewayTest extends \Omnipay\Tests\GatewayTestCase
         $this->assertSame('14496097', $response->getCardReference());
         $this->assertSame(
             'The customer profile for 14496097\/John Doe was successfully created.',
+            $response->getMessage()
+        );
+    }
+
+    public function testUpdateCardSuccess()
+    {
+        $customer_id = 14496097;
+        $this->setMockHttpResponse('CreditCard/UpdateCardResponseSuccess.txt');
+
+        $this->gateway->setPassword('demo123');
+        $request = $this->gateway->updateCard($this->options);
+        // set our paytrace customer id
+        $request->setCardReference($customer_id);
+
+        $response = $request->send();
+
+        $this->assertInstanceOf('\Omnipay\Paytrace\Message\CreditCard\CreateCardResponse', $response);
+        $this->assertTrue($response->isSuccessful());
+        $this->assertFalse($response->isRedirect());
+        $this->assertNull($response->getTransactionReference());
+        $this->assertSame('161', $response->getCode());
+        $this->assertSame('14496097', $response->getCardReference());
+        $this->assertSame(
+            'The customer profile for 14496097\/John Doe was successfully updated.',
             $response->getMessage()
         );
     }

@@ -28,11 +28,19 @@ class AbstractGateway extends \Omnipay\Common\AbstractGateway
             $params
         );
     }
-    
+
     public function createCard(array $params = [])
     {
         return $this->createRequest(
             '\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\CreateCardRequest',
+            $params
+        );
+    }
+
+    public function updateCard(array $params = [])
+    {
+        return $this->createRequest(
+            '\Omnipay\Paytrace\Message\\' . static::GATEWAY_TYPE . '\UpdateCardRequest',
             $params
         );
     }

@@ -4,30 +4,30 @@ namespace Omnipay\Paytrace\Message\CreditCard;
 
 use Omnipay\Tests\TestCase;
 
-class PurchaseRequestTest extends TestCase
+class UpdateCardRequestTest extends TestCase
 {
-    /** @var  \Omnipay\Paytrace\Message\CreditCard\PurchaseRequest $request */
+    /** @var  \Omnipay\Paytrace\Message\CreditCard\UpdateCardRequest $request */
     private $request;
 
     public function setUp()
     {
         parent::setUp();
-        $this->request = new PurchaseRequest($this->getHttpClient(), $this->getHttpRequest());
+        $this->request = new UpdateCardRequest($this->getHttpClient(), $this->getHttpRequest());
     }
 
     public function testGetData()
     {
+        $customer_id = 14496097;
+
         $expectedData = [
             'username' => 'tester',
             'password' => 'testpwd',
-            'invoiceId' => '1000001',
-            'amount' => '10.00',
             'card' => [
                 'firstName' => 'Example',
                 'lastName' => 'User',
                 'number' => '4111111111111111',
                 'expiryMonth' => '07',
-                'expiryYear' => '2050',
+                'expiryYear' => '2020',
                 'cvv' => '123',
                 'billingAddress1' => '123 Billing St',
                 'billingAddress2' => 'Billsville',
@@ -44,10 +44,11 @@ class PurchaseRequestTest extends TestCase
                 'shippingCountry' => 'US',
                 'shippingPhone' => '(555) 987-6543',
             ],
-            'testmode' => 1,
+            'testmode' => 1
         ];
 
         $this->request->initialize($expectedData);
+        $this->request->setCardReference($customer_id);
 
         $data = $this->request->getData();
 
@@ -59,9 +60,8 @@ class PurchaseRequestTest extends TestCase
         $this->assertSame($expectedData['card']['shippingCity'], $data['SCITY']);
         $this->assertSame($expectedData['username'], $data['UN']);
         $this->assertSame($expectedData['password'], $data['PSWD']);
-        $this->assertSame('ProcessTranx', $data['METHOD']);
-        $this->assertSame('Sale', $data['TRANXTYPE']);
-        $this->assertSame('10.00', $data['AMOUNT']);
+        $this->assertSame($customer_id, $data['CUSTID']);
+        $this->assertSame('UpdateCustomer', $data['METHOD']);
         $this->assertSame('Y', $data['TERMS']);
     }
 }
