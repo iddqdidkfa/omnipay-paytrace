@@ -25,7 +25,7 @@ class CreateCardRequestTest extends TestCase
                 'lastName' => 'User',
                 'number' => '4111111111111111',
                 'expiryMonth' => '07',
-                'expiryYear' => '2020',
+                'expiryYear' => '2050',
                 'cvv' => '123',
                 'billingAddress1' => '123 Billing St',
                 'billingAddress2' => 'Billsville',
